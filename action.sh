@@ -154,6 +154,9 @@ do
     min_cpu_platform)
       min_cpu_platform_flag=--min-cpu-platform="$OPTLARG"
       ;;
+    cgroup_v1)
+      cgroup_v1=$OPTLARG
+      ;;
     h|help)
       usage
       exit 0
