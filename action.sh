@@ -42,6 +42,7 @@ maintenance_policy_terminate=
 arm=
 accelerator=
 min_cpu_platform_flag=
+cgroup_v1=false
 
 OPTLIND=1
 while getopts_long :h opt \
@@ -70,6 +71,7 @@ while getopts_long :h opt \
   arm required_argument \
   maintenance_policy_terminate optional_argument \
   accelerator optional_argument \
+  cgroup_v1 no_argument \
   min_cpu_platform optional_argument \
   help no_argument "" "$@"
 do
@@ -212,6 +214,19 @@ function start_vm {
   }
   trap shutdown ERR
   "
+
+  startup_check_cgroup="
+  if ! grep -q 'systemd.unified_cgroup_hierarchy=0' /etc/default/grub; then
+    sed -i 's/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"systemd.unified_cgroup_hierarchy=0 /' /etc/default/grub
+    update-grub
+    reboot
+  fi
+  "
+  if [[ "${cgroup_v1}" == "true" ]]; then
+    startup_prelude="${startup_prelude}
+    ${startup_check_cgroup}
+    "
+  fi
 
   startup_script="
 	# Create a systemd service in charge of shutting down the machine once the workflow has finished
