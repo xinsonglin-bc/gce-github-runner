@@ -42,7 +42,7 @@ maintenance_policy_terminate=
 arm=
 accelerator=
 min_cpu_platform_flag=
-cgroup_v1=false
+cgroup_v1=
 
 OPTLIND=1
 while getopts_long :h opt \
@@ -71,7 +71,7 @@ while getopts_long :h opt \
   arm required_argument \
   maintenance_policy_terminate optional_argument \
   accelerator optional_argument \
-  cgroup_v1 no_argument \
+  cgroup_v1 required_argument \
   min_cpu_platform optional_argument \
   help no_argument "" "$@"
 do
