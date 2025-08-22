@@ -219,20 +219,15 @@ function start_vm {
   "
 
   startup_check_cgroup="
-  set +e
-  trap - ERR
   if ! grep -q 'systemd.unified_cgroup_hierarchy=0' /etc/default/grub; then
     sed -i 's/GRUB_CMDLINE_LINUX=\"/GRUB_CMDLINE_LINUX=\"systemd.unified_cgroup_hierarchy=0 /' /etc/default/grub
     update-grub
     reboot
   fi
-  set -e
-  trap - ERR
   "
   if [[ "${cgroup_v1}" == "true" ]]; then
-    startup_prelude="${startup_prelude}
-    ${startup_check_cgroup}
-    "
+    startup_prelude="${startup_check_cgroup}
+    ${startup_prelude}"
   fi
 
   startup_script="
