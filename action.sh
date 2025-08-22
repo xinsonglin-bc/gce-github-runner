@@ -209,13 +209,13 @@ function start_vm {
 
   shutdown_command="gcloud compute instances delete $VM_ID --zone=$machine_zone --quiet"
   startup_prelude="#!/bin/bash
-  set -e
-  shutdown() {
-    echo ❌ Machine setup failed so deleting $VM_ID in ${machine_zone} in ${shutdown_timeout} seconds ...
-    sleep ${shutdown_timeout}
-    ${shutdown_command}
-  }
-  trap shutdown ERR
+  # set -e
+  # shutdown() {
+  #   echo ❌ Machine setup failed so deleting $VM_ID in ${machine_zone} in ${shutdown_timeout} seconds ...
+  #   sleep ${shutdown_timeout}
+  #   ${shutdown_command}
+  # }
+  # trap shutdown ERR
   "
 
   startup_check_cgroup="
